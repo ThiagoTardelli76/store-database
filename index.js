@@ -98,7 +98,7 @@ const server = http.createServer((req, res) => {
                     }
         
                     const query = 'UPDATE produtos SET nome = ?, preco = ? WHERE id = ?';
-                    db.query(query, [nome, preco, id], (err, result) => {
+                    db.query(query, [nome, preco, id], (err) => {
                         if (err) {
                             console.error("Erro no MySQL:", err.sqlMessage);
                             res.writeHead(500);

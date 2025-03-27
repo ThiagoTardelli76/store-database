@@ -2,20 +2,30 @@
 
 import { useState, useEffect } from "react";
 
+type Produto = {
+  id: number;
+  nome: string;
+  preco: number;
+};
+
+
 const Produtos = () => {
-  const [produtos, setProdutos] = useState([]);
   const [nome, setNome] = useState("");
   const [preco, setPreco] = useState("");
-  const [editando, setEditando] = useState(null); // ID do produto em edição
+  const [editando, setEditando] = useState<number | null>(null); // Permitindo tanto number quanto null
+  const [produtos, setProdutos] = useState<Produto[]>([]);
 
-  // Carrega os produtos ao iniciar
   useEffect(() => {
     fetch("http://localhost:3001/produtos")
       .then((res) => res.json())
-      .then((data) => setProdutos(data));
+      .then((data) => {
+        // Verifica se todos os produtos têm o campo preco definido
+        const produtosComPrecoValido = data.filter((produto: Produto) => produto.preco != null);
+        setProdutos(produtosComPrecoValido);
+      });
   }, []);
 
-  // Adiciona um produto
+  // Adicionar um produto
   const adicionarProduto = async () => {
     const novoProduto = { nome, preco: parseFloat(preco) };
 
@@ -26,25 +36,21 @@ const Produtos = () => {
     });
 
     if (response.ok) {
-      setProdutos([...produtos, novoProduto]);
-      setNome("");
-      setPreco("");
+      // Força o recarregamento da página após adicionar
+      window.location.reload();
     }
   };
 
-  // Deleta um produto
-  const deletarProduto = async (id) => {
-    // Realiza a exclusão no banco de dados
+  // Deletar um produto
+  const deletarProduto = async (id: number) => {
     await fetch(`http://localhost:3001/produtos/${id}`, { method: "DELETE" });
 
-    // Recarrega a lista de produtos após a exclusão
-    const response = await fetch("http://localhost:3001/produtos");
-    const data = await response.json();
-    setProdutos(data); // Atualiza o estado de produtos com a lista atualizada
+    // Força o recarregamento da página após deletar
+    window.location.reload();
   };
 
-  // Atualiza um produto
-  const atualizarProduto = async (id) => {
+  // Atualizar um produto
+  const atualizarProduto = async (id: number) => {
     const response = await fetch(`http://localhost:3001/produtos/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -52,12 +58,11 @@ const Produtos = () => {
     });
 
     if (response.ok) {
-      setProdutos(produtos.map(p => p.id === id ? { ...p, nome, preco: parseFloat(preco) } : p));
-      setEditando(null);
-      setNome("");
-      setPreco("");
+      // Força o recarregamento da página após editar
+      window.location.reload();
     }
   };
+
 
   return (
     <div className="min-h-screen bg-gray-100 p-10 font-sans text-black">
@@ -68,7 +73,7 @@ const Produtos = () => {
         {produtos.map((p) => (
           <div key={p.id} className="bg-white rounded-lg shadow-lg p-4 flex flex-col items-center">
             <h3 className="text-lg font-semibold">{p.nome}</h3>
-            <p className="text-gray-700 text-lg font-bold">{p.preco.toFixed(2)} €</p>
+            <p className="text-gray-700 text-lg font-bold">{p.preco ? p.preco.toFixed(2) : '0.00'} €</p>
 
             <div className="flex gap-2 mt-3">
               <button
