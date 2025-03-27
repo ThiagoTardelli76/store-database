@@ -72,7 +72,7 @@ const Produtos = () => {
 
             <div className="flex gap-2 mt-3">
               <button
-                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-yellow-700"
+                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
                 onClick={() => {
                   setEditando(p.id);
                   setNome(p.nome);
@@ -114,7 +114,7 @@ const Produtos = () => {
         />
         <button
           onClick={editando ? () => atualizarProduto(editando) : adicionarProduto}
-          className="w-full bg-green-500 text-white px-4 py-2 rounded hover:bg-blue-700"
+          className="w-full bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700"
         >
           {editando ? "Salvar Alteração" : "Adicionar Produto"}
         </button>
