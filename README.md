@@ -1,5 +1,7 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+It consists on a webpage using Next.js, Node.js and MySQL that manages the database from a store.
+
 ## Getting Started
 
 First, run the development server:
