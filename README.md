@@ -1,5 +1,7 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+It consists on a webpage using Next.js, Node.js and MySQL that manages the database from a store.
+
 ## Getting Started
 
 First, run the development server:
@@ -12,6 +14,11 @@ yarn dev
 pnpm dev
 # or
 bun dev
+```
+
+To run the node.js file (index.js).
+```bash
+node index.js
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
